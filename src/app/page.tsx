@@ -1,9 +1,13 @@
 // import Image from "next/image";
 
+import { SpinLoader } from "@/components/SpinLoader";
+
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <div className="">
         <h1>Euler Henrique Pinto Araudjo Valente</h1>
+        <br/><br/>
+        <SpinLoader containerClass=""/>
     </div>
   );
 }
