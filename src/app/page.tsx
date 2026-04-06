@@ -1,13 +1,36 @@
 // import Image from "next/image";
 
-import { SpinLoader } from "@/components/SpinLoader";
+import { Suspense } from "react";
 
-export default function Home() {
+import { SpinLoader } from "@/components/SpinLoader";
+import PostLists from "@/components/PostsList";
+import { Container } from "@/components/Container";
+// import Teste from "@/components/Testes";
+
+export default async function Home() {
+
   return (
-    <div className="">
+    <Container>
+        <header>
+            <h1 className="text-6xl font-bold text-center py-8">
+                aqui você verá informativos dinamicos, cada vez que acessa a pagina!
+            </h1>
+
+
+        </header>
         <h1>Euler Henrique Pinto Araudjo Valente</h1>
-        <br/><br/>
-        <SpinLoader containerClass=""/>
-    </div>
+        <br/>
+        <Suspense fallback={<SpinLoader/>}>
+           <PostLists/>
+        </Suspense>
+         {/* <br/><br/>
+         <Teste/> */}
+
+        <footer className="text-6xl font-bold text-center py-8">
+            <p>
+                e aqui a marca, o logotipo e marca registrada...
+            </p>
+        </footer>
+     </Container>
   );
 }
