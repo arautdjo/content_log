@@ -5,21 +5,21 @@ import { Suspense } from "react";
 import { SpinLoader } from "@/components/SpinLoader";
 import PostLists from "@/components/PostsList";
 import { Container } from "@/components/Container";
+import Header from "@/components/Header";
+
+import { PostFeatured } from "@/components/PostFeatured";
 // import Teste from "@/components/Testes";
 
-export default async function Home() {
+export default async function Home(){
 
   return (
     <Container>
-        <header>
-            <h1 className="text-6xl font-bold text-center py-8">
-                aqui você verá informativos dinamicos, cada vez que acessa a pagina!
-            </h1>
+      <Header/>
 
+         <Suspense fallback={<SpinLoader/>}>
+           <PostFeatured/>
+        </Suspense>
 
-        </header>
-        <h1>Euler Henrique Pinto Araudjo Valente</h1>
-        <br/>
         <Suspense fallback={<SpinLoader/>}>
            <PostLists/>
         </Suspense>

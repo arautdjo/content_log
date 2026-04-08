@@ -22,10 +22,13 @@ export class JsonPostRepository implements PostRepository{
          return posts
      }
 
-    async findAll(): Promise<PostModel[]>{
+    async findAllPublic(): Promise<PostModel[]>{
+        console.log('\n', 'findAllPublic', '\n', 'BEFORE')
         await this.simulateWait();
         const posts = await this.readFromDisk();
-         return posts
+        console.log('\n', 'findAllPublic', '\n', 'AFTER')
+
+         return posts.filter(post=>post.published)
 
     }
 
