@@ -13,8 +13,8 @@ import { PostFeatured } from "@/components/PostFeatured";
 export default async function Home(){
 
   return (
-    <Container>
-      <Header/>
+
+        <>
 
          <Suspense fallback={<SpinLoader/>}>
            <PostFeatured/>
@@ -23,14 +23,12 @@ export default async function Home(){
         <Suspense fallback={<SpinLoader/>}>
            <PostLists/>
         </Suspense>
-         {/* <br/><br/>
-         <Teste/> */}
 
-        <footer className="text-6xl font-bold text-center py-8">
-            <p>
-                e aqui a marca, o logotipo e marca registrada...
-            </p>
-        </footer>
-     </Container>
+            {/* <br/><br/>
+            <Teste/> */}
+
+
+
+        </>
   );
 }

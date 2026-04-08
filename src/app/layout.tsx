@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Container } from "@/components/Container";
+import Header from "@/components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +40,15 @@ export default function RootLayout({
           <hr/>
         </div>
       </div> */}
-
-        {children}
+         <Container>
+          <Header/>
+               {children}
+            <footer className="text-6xl font-bold text-center py-8">
+                <p>
+                    e aqui a marca, o logotipo e marca registrada...
+                </p>
+            </footer>
+            </Container>
         </body>
     </html>
   );
