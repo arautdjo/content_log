@@ -4,8 +4,6 @@ import { Suspense } from "react";
 
 import { SpinLoader } from "@/components/SpinLoader";
 import PostLists from "@/components/PostsList";
-import { Container } from "@/components/Container";
-import Header from "@/components/Header";
 
 import { PostFeatured } from "@/components/PostFeatured";
 // import Teste from "@/components/Testes";
