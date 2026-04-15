@@ -1,9 +1,9 @@
 import { PostCoverImage } from "../PostCoverImage";
 import { PostSUmmary } from "../PostSUmmary";
-import { findALlPublicPosts } from "@/lib/post/queries";
+import { findALlPublicPostsCahed } from "@/lib/post/queries";
 
 export async function PostFeatured(){
-        const allPosts = await findALlPublicPosts();
+        const allPosts = await findALlPublicPostsCahed();
         const FeaturedPost = allPosts[0]
 
     const slug = "qualquer coisa"

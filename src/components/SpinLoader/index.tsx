@@ -1,19 +1,18 @@
 type SpinLoaderProps  ={
-    containerClass?: string
+    className?: string
 }
 
-export function SpinLoader({containerClass = ''}: SpinLoaderProps){
+export function SpinLoader({className = ''}: SpinLoaderProps){
     return(
         <div className={`
-        flex items-center justify-center bg-amber-400
-        ${containerClass}
+        flex items-center justify-center
+        ${className}
 
 
         `}>
-            Spin Loading...
             <div className={`
                 w-10 h-10 border-5 border-t-transparent
-                border-slate-900 rounded-full animate-spin
+                border-slate-700 rounded-full animate-spin
                 `}>
 
             </div>

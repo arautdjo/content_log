@@ -5,7 +5,7 @@ import { readFile } from 'fs/promises';
 
 const ROOT_DIR = process.cwd();
 const JSON_POST_SEED_PATH = resolve(ROOT_DIR,'src','db','seeds','posts.json');
-const MILULATE_WAIT_IN_MS = 5000;
+const MILULATE_WAIT_IN_MS = 0;
 
 export class JsonPostRepository implements PostRepository{
 
@@ -16,6 +16,7 @@ export class JsonPostRepository implements PostRepository{
     }
 
      private async readFromDisk(): Promise<PostModel[]>{
+        await this.simulateWait()
          const jsonCOntent = await readFile(JSON_POST_SEED_PATH,'utf-8');
          const jsonParsed =  JSON.parse(jsonCOntent)
          const { posts } = jsonParsed;
@@ -37,10 +38,23 @@ export class JsonPostRepository implements PostRepository{
           const postById = allPosts.find(post => post.id === id )
 
           if(!postById){
-              throw new Error('Post não encontrado...')
+              throw new Error('Post não encontrado. Id inexistente')
           }
 
           return postById
+    }
+
+
+
+    async findBySlug(slug: string): Promise<PostModel> {
+          const allPosts = await this.readFromDisk();
+          const postBySlug = allPosts.find(post => post.slug === slug )
+
+          if(!postBySlug){
+              throw new Error('Post não encontrado. SLug inexistente')
+          }
+
+          return postBySlug
     }
 
 
