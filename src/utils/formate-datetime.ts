@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow as formatFSNDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { cacheTag } from "next/cache";
 
 export function formatDateTime(rawDate:string): string{
     const date = new Date(rawDate);
@@ -7,6 +8,21 @@ export function formatDateTime(rawDate:string): string{
     return format(date,"dd/MM/yyyy 'ás' HH'h'mm",{
        locale: ptBR
     })
+}
+
+
+export function formatDateTimeTest(rawDate:string){
+
+
+    const date = new Date(rawDate);
+
+    return Math.random()
+}
+
+export async function formatDateTimeTestWrapper(opa:Date){
+    // 'use cache'
+    cacheTag('exemplo_dinamicoo')
+    return formatDateTimeTest(new Date().toDateString())
 }
 
 

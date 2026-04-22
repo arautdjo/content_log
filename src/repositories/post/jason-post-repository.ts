@@ -46,7 +46,7 @@ export class JsonPostRepository implements PostRepository{
 
 
 
-    async findBySlug(slug: string): Promise<PostModel> {
+    async findBySlugPublic(slug: string): Promise<PostModel> {
           const allPosts = await this.readFromDisk();
           const postBySlug = allPosts.find(post => post.slug === slug )
 
@@ -55,6 +55,11 @@ export class JsonPostRepository implements PostRepository{
           }
 
           return postBySlug
+    }
+
+    async findAll(): Promise<PostModel[]> {
+            const allPosts = await this.readFromDisk();
+            return allPosts
     }
 
 

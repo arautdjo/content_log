@@ -8,6 +8,9 @@ import PostLists from "@/components/PostsList";
 import { PostFeatured } from "@/components/PostFeatured";
 // import Teste from "@/components/Testes";
 
+export const dynamic = 'force-static'
+
+
 export default async function Home(){
 
   return (

@@ -24,9 +24,11 @@ export async function SinglePost({slug}: SinglePostProps){
                     src={encontrado.coverImageUrl}
                     alt={encontrado.title}
                 />
+
                 <PostHeading as="h2" url={`/post/${encontrado.slug}`}>
                     {encontrado.title}
                 </PostHeading>
+
                     <p>
                      {encontrado.author} | <PostDate createdAt={encontrado.createdAt}/>
                     </p>
