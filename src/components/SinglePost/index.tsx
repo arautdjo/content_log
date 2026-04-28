@@ -1,4 +1,4 @@
-import { findPostBySLugCached } from "@/lib/post/queries"
+import { findPublicPostBySlugCached } from "@/lib/post/queries/public"
 import Image from "next/image"
 import { PostHeading } from "../PostHeading"
 import { PostDate } from "../PostDate"
@@ -10,7 +10,7 @@ type SinglePostProps = {
 
 export async function SinglePost({slug}: SinglePostProps){
 
-    const encontrado = await findPostBySLugCached(slug)
+    const encontrado = await findPublicPostBySlugCached(slug)
 
     return(
 
@@ -21,24 +21,24 @@ export async function SinglePost({slug}: SinglePostProps){
                     className={`rounded-4xl`}
                     width={1200}
                     height={720}
-                    src={encontrado.coverImageUrl}
-                    alt={encontrado.title}
+                    src={`${encontrado?.coverImageUrl}`}
+                    alt={`${encontrado?.title}`}
                 />
 
-                <PostHeading as="h2" url={`/post/${encontrado.slug}`}>
-                    {encontrado.title}
+                <PostHeading as="h2" url={`/post/${encontrado?.slug}`}>
+                    {encontrado?.title}
                 </PostHeading>
 
                     <p>
-                     {encontrado.author} | <PostDate createdAt={encontrado.createdAt}/>
+                     {encontrado?.author} | <PostDate createdAt={`${encontrado?.createdAt}`}/>
                     </p>
 
                     <p className=" text-2xl mb-9 text-slate-700">
-                        {encontrado.excerpt}
+                        {encontrado?.excerpt}
                     </p>
 
                     <div>
-                      <SafeMarkDown markdown={encontrado.content}/>
+                      <SafeMarkDown markdown={`${encontrado?.content}`}/>
                     </div>
             </header>
         </article>

@@ -3,13 +3,18 @@ import {PostRepository} from './post-repository'
 import { drizzleDb } from '@/db/drizzle';
 // import { desc } from 'drizzle-orm';
 import { postsTable } from '@/db/drizzle/schemas';
+import { logColored } from '@/utils/log-color';
+import { assyncDelay } from '@/utils/async-delay';
+import { MILULATE_WAIT_IN_MS } from '@/lib/constants';
 
 // implements PostRepository
 
 export class DrizzlePostRepository implements PostRepository{
 
        async findAllPublic(): Promise<PostModel[]> {
-              console.log('from within drizzle repository')
+        await assyncDelay(MILULATE_WAIT_IN_MS,true)
+
+              logColored('Drizzle - findAllPublic- ', Date.now())
              const allPublicPosts = await drizzleDb.query.posts.findMany({
                 orderBy: (posts,{desc})=>desc(postsTable.createdAt),
                 where:(posts,{eq})=>eq(postsTable.published,true)
@@ -19,7 +24,9 @@ export class DrizzlePostRepository implements PostRepository{
        }
 
        async findBySlugPublic(slug:string): Promise<PostModel>{
-              console.log('from within drizzle repository')
+             await assyncDelay(MILULATE_WAIT_IN_MS,true)
+
+              logColored('Drizzle findBySlugPublic', Date.now())
 
              const postBySLug = await drizzleDb.query.posts.findFirst({
                 where: (posts,{and,eq})=> and(eq(posts.published,true),eq(posts.slug,slug))
@@ -33,7 +40,9 @@ export class DrizzlePostRepository implements PostRepository{
        }
 
        async findAll(): Promise<PostModel[]>{
-              console.log('from within drizzle repository')
+              await assyncDelay(MILULATE_WAIT_IN_MS,true)
+
+              logColored('Drizzle findAll - ', Date.now())
 
         const allPosts = drizzleDb.query.posts.findMany({
             orderBy: (posts,{desc})=>desc(posts.createdAt)
@@ -44,7 +53,9 @@ export class DrizzlePostRepository implements PostRepository{
        }
 
        async findById(id:string): Promise<PostModel>{
-              console.log('from within drizzle repository')
+              await assyncDelay(MILULATE_WAIT_IN_MS,true)
+
+              logColored('Drizzle - findById', Date.now())
 
             const postById = await drizzleDb.query.posts.findFirst({
                 where:(posts,{eq})=>eq(posts.id,id)
@@ -57,15 +68,18 @@ export class DrizzlePostRepository implements PostRepository{
             return postById
        }
 
+
+
 }
 
 
-(async ()=>{
-          const repo = new DrizzlePostRepository()
-          const postsReceived = await repo.findAllPublic()
-          const postBySLug = await repo.findBySlugPublic('o-papel-do-silencio-em-uma-vida-criativa')
-          console.log('--JESUS CRISTO É O SENHOR --')
-        //   postsReceived.forEach(post=>console.log(post.slug))
-          console.log(postBySLug)
-          console.log('--JESUS CRISTO É O SENHOR --')
-})()
+// (async ()=>{
+//         await assyncDelay(MILULATE_WAIT_IN_MS,true)
+
+//           const repo = new DrizzlePostRepository()
+//           const postsReceived = await repo.findAllPublic()
+//           const postBySLug = await repo.findBySlugPublic('o-papel-do-silencio-em-uma-vida-criativa')
+//           console.log('--JESUS CRISTO É O SENHOR --')
+//           console.log(postBySLug)
+//           console.log('--JESUS CRISTO É O SENHOR --')
+// })()

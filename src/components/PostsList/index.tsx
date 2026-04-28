@@ -1,6 +1,6 @@
 import { PostCoverImage } from "../PostCoverImage";
 import { PostSUmmary } from "../PostSUmmary";
-import { findALlPublicPostsCahed } from "@/lib/post/queries";
+import { findALlPublicPostsCahed } from "@/lib/post/queries/public";
 
 export default async function PostLists(){
     await  findALlPublicPostsCahed();

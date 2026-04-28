@@ -1,12 +1,12 @@
 import { PostCoverImage } from "../PostCoverImage";
 import { PostSUmmary } from "../PostSUmmary";
-import { findALlPublicPostsCahed } from "@/lib/post/queries";
+import { findALlPublicPostsCahed } from "@/lib/post/queries/public";
 
 export async function PostFeatured(){
         const allPosts = await findALlPublicPostsCahed();
         const FeaturedPost = allPosts[0]
 
-    const slug = "qualquer coisa"
+    const slug = FeaturedPost.slug
     const postLink = `/post/${slug}`
     return(
         <section className={`

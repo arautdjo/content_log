@@ -16,6 +16,7 @@ export async function revalidateExampleAction(formData: FormData){
     revalidatePath(calminho)
     // revalidateTag('randomUser','')
     revalidateTag('posts','')
-    revalidateTag('post-o-papel-do-silencio-em-uma-vida-criativa','')
+    // revalidateTag('hora_lalaiede','')
+    revalidatePath(calminho)
 
 }

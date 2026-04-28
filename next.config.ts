@@ -12,6 +12,18 @@ const nextConfig: NextConfig = {
 //        expire:25
 //    }
 //     }
+
+    experimental:{
+        useCache:true
+    },
+
+    cacheLife:{
+        seconds:{
+            stale:0,
+            revalidate:20,
+            expire:40
+        }
+    }
 };
 
 export default nextConfig;

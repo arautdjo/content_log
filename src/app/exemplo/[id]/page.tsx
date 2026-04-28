@@ -1,5 +1,6 @@
 
 import { revalidateExampleAction } from "@/actions/revalidate-examples"
+import { cacheLife } from "next/cache"
 // import { formatDateTimeTestWrapper } from "@/utils/formate-datetime"
 
 // export const dynamic = 'force-static'
@@ -15,10 +16,11 @@ import { revalidateExampleAction } from "@/actions/revalidate-examples"
 
 
 export default async function examplePage({params}: {params: Promise<{id:string}>}){
-    // cacheLife('seconds')
+    'use cache'
+    cacheLife('seconds')
 
-    // const hora = Date.now().toLocaleString('pt-BR')
-    const hora = Math.random()
+    const hora = Date.now().toLocaleString('pt-BR')
+    // const hora = Math.random()
     const {id} = await params
 
 

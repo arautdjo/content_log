@@ -1,11 +1,30 @@
+
+import { ModalBlocking } from "@/components/BlockingModal"
+import { PostListAdmin } from "@/components/PostListAdmin"
+import { SpinLoader } from "@/components/SpinLoader"
+// import { findAllPostAdminCahed } from "@/lib/post/queries/admin"
+// import { Metadata } from "next"
+import { Suspense } from "react"
+
 export const dynamic = 'force-dynamic'
 
-export default async function AdminPostPage(){
-    return <div className="py-16 text-6xl text-red-700">
-        <p>
 
-         Oi: AdminPostPage
-        </p>
+// export const metadata: Metadata = {
+//     title: 'Post Admin'
+// }
 
-    </div>
+export default  function AdminPostPage(){
+//   findAllPostAdminCahed
+    // const posts = await findAllPostAdmin()
+
+
+    return(
+
+            <ModalBlocking>
+                <Suspense fallback={<SpinLoader/>}>
+                <PostListAdmin/>
+                </Suspense>
+            </ModalBlocking>
+
+    )
 }

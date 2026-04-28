@@ -1,6 +1,7 @@
 import { SinglePost } from "@/components/SinglePost";
 import { SpinLoader } from "@/components/SpinLoader";
-import {  findPostBySLugCached } from "@/lib/post/queries";
+import {  findPublicPostBySlugCached } from "@/lib/post/queries/public";
+import { PostModel } from "@/models/posts/posts-model";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -8,7 +9,7 @@ export const dynamic = 'force-static'
 
 
 export async function generateMetadata({params}: {params: Promise<{slug: string}>}): Promise<Metadata>{
-        const encontrado = await findPostBySLugCached(await params.then((valor)=>valor.slug))
+        const encontrado = await findPublicPostBySlugCached(await params.then((valor)=>valor.slug))
 
     return{
         title: encontrado.title,

@@ -1,11 +1,12 @@
 import { PostModel } from "@/models/posts/posts-model";
 import { PostRepository } from "./post-repository";
-import { resolve } from "path";
 import { readFile } from 'fs/promises';
+import {
+    MILULATE_WAIT_IN_MS,
+    ROOT_DIR,
+    JSON_POST_SEED_PATH
+ } from "@/lib/constants";
 
-const ROOT_DIR = process.cwd();
-const JSON_POST_SEED_PATH = resolve(ROOT_DIR,'src','db','seeds','posts.json');
-const MILULATE_WAIT_IN_MS = 0;
 
 export class JsonPostRepository implements PostRepository{
 
