@@ -1,6 +1,7 @@
 import { findAllPostAdminCahed } from "@/lib/post/queries/admin"
 import Link from "next/link"
 import { AdminDelBtn } from "../AdminDelBtn"
+import { Dialog } from "../Dialog"
 
 export async function PostListAdmin(){
 
@@ -31,6 +32,7 @@ export async function PostListAdmin(){
                        </div>
                        )
                 })}
+               <Dialog/>
             </div>
             )
 

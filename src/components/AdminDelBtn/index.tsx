@@ -18,7 +18,7 @@ export function AdminDelBtn({title, id}: {title: string, id:string}){
 
             const resposta = await deletePostAction(id)
             modalRef.current?.classList.remove("pointer-events-none")
-            modalRef.current?.classList.add("pointer-events-auto")
+            // modalRef.current?.classList.add("pointer-events-auto")
             console.log('--SEM PRESSA--')
             console.log(modalRef)
             console.log('--SEM PRESSA--')
@@ -29,11 +29,16 @@ export function AdminDelBtn({title, id}: {title: string, id:string}){
 
     }
 
+    // async function HeyD(id:string){
+    //    const aqui = await deletePostAction(id)
+    //    alert(aqui)
+    // }
+
 
     return(
 
 
-            <button className={`
+        <button className={`
             transition
             cursor-pointer [&_svg]:w-4
             [&_svg]:h-4 [&_svg]:text-amber-600

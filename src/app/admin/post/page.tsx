@@ -24,6 +24,8 @@ export default  function AdminPostPage(){
                 <Suspense fallback={<SpinLoader/>}>
                 <PostListAdmin/>
                 </Suspense>
+
+
             </ModalBlocking>
 
     )
