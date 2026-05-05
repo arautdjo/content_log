@@ -18,10 +18,16 @@ const nextConfig: NextConfig = {
     },
 
     cacheLife:{
+        // seconds:{
+        //     stale:0,
+        //     revalidate:20,
+        //     expire:40
+        // }
+
         seconds:{
             stale:0,
-            revalidate:20,
-            expire:40
+            revalidate:0,
+            expire:0
         }
     }
 };

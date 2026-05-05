@@ -10,8 +10,13 @@ cache(async ()=> await  postRepository.findAll())
 
 
 export const findAllPostAdminCahed = unstable_cache(postRepository.findAll,
-    ['admin-cache'], {revalidate:50000}
+    ['admin-cache'],{tags:['admin-cache']}
 )
+
+
+
+
+
 
 
 // export const findAllPostAdminCahed = cache(()=>{

@@ -1,13 +1,14 @@
 import { findAllPostAdminCahed } from "@/lib/post/queries/admin"
 import Link from "next/link"
 import { AdminDelBtn } from "../AdminDelBtn"
-import { Dialog } from "../Dialog"
+import { ErrorsMessages } from "../../ErrorsMessages"
 
 export async function PostListAdmin(){
 
    const posts = await findAllPostAdminCahed()
 
 
+    if(posts.length <= 0)  return <ErrorsMessages contentTitle="Hey MAn 😁" content="How about a post??"/>
 
     return(
            <div className="mb-16">
@@ -32,7 +33,7 @@ export async function PostListAdmin(){
                        </div>
                        )
                 })}
-               <Dialog/>
+
             </div>
             )
 

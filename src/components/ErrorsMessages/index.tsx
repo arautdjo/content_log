@@ -1,14 +1,14 @@
 type ErrorsMessagesProps = {
-   pageTitle:string,
+   pageTitle?:string,
    contentTitle:string
    content: React.ReactNode
 }
 
-export function ErrorsMessages({content, contentTitle,pageTitle}: ErrorsMessagesProps){
+export function ErrorsMessages({content, contentTitle,pageTitle=''}: ErrorsMessagesProps){
 
     return(
         <>
-            <title>{pageTitle}</title>
+            {pageTitle && <title>{pageTitle}</title>}
             <div className={`
                     min-h-[320px] bg-slate-800 text-slate-100
                     mb-16 p-8 rounded-3xl flex items-center justify-center

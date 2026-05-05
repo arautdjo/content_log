@@ -1,6 +1,6 @@
 
 import { ModalBlocking } from "@/components/BlockingModal"
-import { PostListAdmin } from "@/components/PostListAdmin"
+import { PostListAdmin } from "@/components/Admin/PostListAdmin"
 import { SpinLoader } from "@/components/SpinLoader"
 // import { findAllPostAdminCahed } from "@/lib/post/queries/admin"
 // import { Metadata } from "next"
@@ -22,7 +22,7 @@ export default  function AdminPostPage(){
 
             <ModalBlocking>
                 <Suspense fallback={<SpinLoader/>}>
-                <PostListAdmin/>
+                   <PostListAdmin/>
                 </Suspense>
 
 

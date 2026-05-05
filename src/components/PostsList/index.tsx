@@ -1,6 +1,8 @@
 import { PostCoverImage } from "../PostCoverImage";
 import { PostSUmmary } from "../PostSUmmary";
 import { findALlPublicPostsCahed } from "@/lib/post/queries/public";
+import { ErrorsMessages } from "../ErrorsMessages";
+
 
 export default async function PostLists(){
     await  findALlPublicPostsCahed();
@@ -12,6 +14,9 @@ export default async function PostLists(){
     await  findALlPublicPostsCahed();
     await  findALlPublicPostsCahed();
     const allPosts = await  findALlPublicPostsCahed();
+
+            if(allPosts.slice(1).length <= 0)  return null
+
 
     return(
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-16">

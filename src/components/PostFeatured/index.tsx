@@ -1,9 +1,14 @@
+import { ErrorsMessages } from "../ErrorsMessages";
 import { PostCoverImage } from "../PostCoverImage";
 import { PostSUmmary } from "../PostSUmmary";
 import { findALlPublicPostsCahed } from "@/lib/post/queries/public";
 
 export async function PostFeatured(){
         const allPosts = await findALlPublicPostsCahed();
+
+        if(allPosts.length <= 0)  return <ErrorsMessages contentTitle="Ops.. 😁" content="Ainda nao criou post? Devagar ein"/>
+
+
         const FeaturedPost = allPosts[0]
 
     const slug = FeaturedPost.slug
