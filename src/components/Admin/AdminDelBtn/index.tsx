@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 export function AdminDelBtn({title, id}: {title: string, id:string}){
 
     const [isPending,startTransition] = useTransition()
-    const {modalRef} = useContext(ModalContext)!
+    const modalRef = useContext(ModalContext)!
     const [showDialog,setShowDialog] = useState(false)
 
      function handleClick(){
@@ -67,9 +67,10 @@ export function AdminDelBtn({title, id}: {title: string, id:string}){
     }
 
 
+
     return(
 
-        <>
+        <div>
          <button className={`
             transition
             cursor-pointer [&_svg]:w-4
@@ -94,7 +95,7 @@ export function AdminDelBtn({title, id}: {title: string, id:string}){
               disabled={isPending}
               />
             )}
-        </>
+        </div>
 
 
     )

@@ -1,5 +1,7 @@
 'use client'
 
+import { Button } from "../Button"
+
 
 
 type DialogProps = {
@@ -48,24 +50,13 @@ export function Dialog({isVisible=false, title,content,onCancel,onConfirm,disabl
                         {content}
                     </div>
                    <div className="flex items-center justify-around">
-                    <button className={`
-                            bg-slate-700 text-white
-                             hover:bg-slate-500 transition
-                             flex items-center justify-center
-                             py-2 px-4 rounded-lg cursor-poiner
-                        `} autoFocus
+                    <Button variant="ghost" autoFocus
                         onClick={onCancel}
-                        >Cancelar</button>
-                    <button className={`
-                          bg-blue-700 text-white
-                             hover:bg-blue-500 transition
-                             flex items-center justify-center
-                             py-2 px-4 rounded-lg cursor-poiner
-                             disabled:cursor-not-allowed disabled:bg-slate-200
-                        `}
+                        >Cancelar</Button>
+                    <Button
                         onClick={onConfirm}
                         disabled={disabled}
-                        >Ok</button>
+                        >Ok</Button>
                    </div>
                  </div>
                </div>

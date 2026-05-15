@@ -4,11 +4,23 @@ import {
   useRef,
   createContext,
   useEffect,
-  ReactNode
+  ReactNode,
+  useState
 } from 'react'
 
+import React from "react";
+
+type deepMapInjectbleProps = {
+    isOpen:boolean,
+    setIsOpen:React.Dispatch<React.SetStateAction<boolean>>,
+    confirmandoNe?:()=>void
+}
+
+
 type ModalContextType = {
-  modalRef: React.RefObject<HTMLDivElement | null>
+  modalRef: React.RefObject<HTMLDivElement | null>,
+  toggleSeting:React.Dispatch<React.SetStateAction<boolean>>,
+  isOpen:boolean
 }
 
 type ModalBlockingProps = {
@@ -22,10 +34,18 @@ export function ModalBlocking({
   children
 }: ModalBlockingProps) {
   const modalRef = useRef<HTMLDivElement>(null)
+  const [isOpen,toggleSeting] = useState(false)
+
+
+
 
   function handleTest() {
     alert('.....HEY......')
   }
+
+
+
+
 
   useEffect(() => {
     if (modalRef.current) {
@@ -33,10 +53,14 @@ export function ModalBlocking({
     }
   }, [])
 
+
+
   return (
-    <ModalContext.Provider value={{ modalRef }}>
+    <ModalContext.Provider value={{ modalRef, toggleSeting, isOpen }}>
       <div ref={modalRef} onClick={handleTest}>
+
         {children}
+
       </div>
     </ModalContext.Provider>
   )
