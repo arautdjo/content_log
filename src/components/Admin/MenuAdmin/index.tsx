@@ -68,12 +68,12 @@ export function MenuAdmin(){
                   Posts
                 </Link>
 
-                <Link className={linkClass} href="/admin/post/new">
+                <Link className={linkClass} href="/admin/new">
                   <PlusIcon/>
                   Criar Novo Post
                 </Link>
 
-                <Link className={linkClass} href="/admin/post">
+                <Link className={linkClass} href="/admin/post/oooopa">
                   <FileTextIcon />
                   edge
                 </Link>

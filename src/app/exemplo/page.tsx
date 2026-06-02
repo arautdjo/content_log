@@ -1,5 +1,4 @@
 import { revalidateExampleAction } from "@/actions/revalidate-examples"
-import { cachedRandomHourValue, randomHourValueCaching } from "@/utils/cache-test"
 
 
 export const dynamic = 'force-dynamic'
