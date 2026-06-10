@@ -1,13 +1,17 @@
 'use client'
 
-import { uploadImageAction } from "@/actions/uploads/upload-image-action"
+import { uploadImageAction } from "@/actions/uploadssisa/upload-image-action"
 import { Button } from "@/components/Button"
-import { UPIMAGE_MAX_SIZE } from "@/lib/constants"
+
 import { ImageUpIcon } from "lucide-react"
 import {useRef,useState, useTransition} from 'react'
 import { toast } from "react-toastify"
 
-export function ImageUploader(){
+type NativeElement = {
+
+} & React.ComponentProps<'input'>
+
+export function ImageUploader({}:NativeElement){
 
     const fileInputRef = useRef<HTMLInputElement | null >(null)
     const [theFile,setTheFile] = useState<string>('')
@@ -30,9 +34,10 @@ export function ImageUploader(){
 
          if(!theFiles) return
 
+         const uploadMaxSze = Number(process.env.NEXT_UPIMAGE_MAX_SIZE) || 921600
 
-         if(theFiles.size > UPIMAGE_MAX_SIZE){
-              toast.error(`Image too Big. Max allowed of:  ${UPIMAGE_MAX_SIZE} `)
+         if(theFiles.size > uploadMaxSze){
+              toast.error(`Image too Big. Max allowed of:  ${uploadMaxSze} `)
               fileInputCurrent.value = ''
               setImg('')
               return

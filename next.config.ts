@@ -13,6 +13,23 @@ const nextConfig: NextConfig = {
 //    }
 //     }
 
+   images:{
+     remotePatterns: [
+        {
+        protocol: 'https',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/**',
+       },
+
+       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/**',
+       },
+    ],
+   },
     experimental:{
         useCache:true
     },
@@ -24,10 +41,16 @@ const nextConfig: NextConfig = {
         //     expire:40
         // }
 
+        // seconds:{
+        //     stale:0,
+        //     revalidate:0,
+        //     expire:0
+        // }
+
         seconds:{
             stale:0,
-            revalidate:0,
-            expire:0
+            revalidate:20,
+            expire:20
         }
     }
 };

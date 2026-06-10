@@ -21,18 +21,18 @@ export const makePublicPostFillOrEmpt = (post?:Partial<PostModel>): PublicPost =
 }
 
 export const makePublicPostFromDB = (post:PostModel): PublicPost =>{
-     return makePublicPostFillOrEmpt(post)
-    // return {
-    //     id:post.id,
-    //     slug:post.slug,
-    //     title:post.title,
-    //     excerpt:post.excerpt,
-    //     coverImageUrl:post.coverImageUrl,
-    //     published:post.published,
-    //     createdAt:post.createdAt,
-    //     author:post.author,
-    //     content:post.content
+    //  return makePublicPostFillOrEmpt(post)
+    return {
+        id:post.id,
+        slug:post.slug,
+        title:post.title,
+        excerpt:post.excerpt,
+        coverImageUrl:post.coverImageUrl,
+        published:post.published,
+        createdAt:post.createdAt,
+        author:post.author,
+        content:post.content
 
-    // }
+    }
 
 }

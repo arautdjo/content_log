@@ -9,21 +9,51 @@ import { ImageUploader } from "../ImageUploader";
 import { PostModel } from "@/models/posts/posts-model";
 import { makePublicPostFillOrEmpt, PublicPost } from "@/dto/post/dto";
 import { createPostAction } from "@/actions/post/create-post-action";
+import {updatePostAction} from "@/actions/post/update-post-action";
 import { toast } from "react-toastify";
+import { useSearchParams,useRouter } from "next/navigation";
 
 
-type ManagePostFormProps = {
-   DTOPost?:PublicPost
+// type ManagePostFormProps = {
+//    DTOPost?:PublicPost
+// }
+
+type ManagePostFormUpdateProps = {
+   mode:'update',
+   publicPost: PublicPost
 }
 
-export function ManagePostForm({DTOPost}: ManagePostFormProps){
+type ManagePostFormCreateProps = {
+   mode:'create'
+}
 
-     const initialState = {
-        formState:makePublicPostFillOrEmpt(DTOPost),
-        errors:[]
+type ManagePostFormProps = ManagePostFormUpdateProps | ManagePostFormCreateProps
+
+export function ManagePostForm(props: ManagePostFormProps){
+
+     const {mode} = props
+     const params = useSearchParams()
+     const option = params.get('option')
+     const rotear = useRouter()
+
+     let publipost;
+     if(mode ==='update'){
+       publipost = props.publicPost
      }
 
-    const [state,theAction,isPendingn] = useActionState(createPostAction,initialState)
+     const actionsMap = {
+        update: updatePostAction,
+        create: createPostAction
+     }
+
+     const initialState = {
+        formState:makePublicPostFillOrEmpt(publipost),
+        errors:[],
+
+
+     }
+
+    const [state,theAction,isPendingn] = useActionState(actionsMap[mode], initialState)
    const {formState} = state
     const [contentValue,setContentValue] = useState(formState?.content || '')
 
@@ -40,6 +70,15 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
 
 
    useEffect(()=>{
+       if(state.sucsses){
+
+           toast.dismiss()
+           toast.success("Post Atualizado")
+       }
+   },[state.sucsses])
+
+
+   useEffect(()=>{
         if(state.errors.length>0){
               toast.dismiss()
               state.errors.forEach((err)=>{
@@ -47,6 +86,19 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
               })
         }
    },[state.errors])
+
+   useEffect(()=>{
+
+    if(option==='create'){
+         toast.dismiss();
+         toast.success('Post criado com susseso')
+         const novaUrl = new URL(window.location.href)
+         novaUrl.searchParams.delete('option')
+        //  rotear.replace(novaUrl.toString())
+         rotear.replace(novaUrl.toString())
+    }
+
+   },[option,rotear])
 
     return(
        <form action={theAction} className='mb-16'>
@@ -57,6 +109,7 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
          placeholder="ID gerado automaticamente"
          type="text"
          defaultValue={formState.id}
+         disabled={isPendingn}
          readOnly
          />
 
@@ -67,6 +120,7 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
          placeholder="SLUG gerada automaticamente"
          type="text"
          defaultValue={formState.slug}
+         disabled={isPendingn}
          readOnly
          />
 
@@ -76,6 +130,7 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
          name="author"
          placeholder="Author name goes here"
          type="text"
+         disabled={isPendingn}
          defaultValue={formState.author}
          />
 
@@ -84,6 +139,7 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
          name="title"
          placeholder="title goes here"
          type="text"
+         disabled={isPendingn}
          defaultValue={formState.title}
          />
 
@@ -93,6 +149,7 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
          name="excerpt"
          placeholder="summary goes here"
          type="text"
+         disabled={isPendingn}
          defaultValue={formState.excerpt}
          />
 
@@ -102,11 +159,12 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
           value={contentValue}
           setValue={setContentValue}
           textAreaName="content"
+
           disabled={false}
         />
 
 
-            <ImageUploader/>
+            <ImageUploader disabled={isPendingn}/>
 
 
 
@@ -116,6 +174,7 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
             placeholder="Please infor image URL"
             type="text"
             defaultValue={formState?.coverImageUrl}
+            disabled={isPendingn}
          />
 
          <InputCheckBox
@@ -123,6 +182,7 @@ export function ManagePostForm({DTOPost}: ManagePostFormProps){
             name="published"
             type="checkbox"
             defaultChecked={formState?.published ? true : false}
+            disabled={isPendingn}
          />
 
 

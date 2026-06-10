@@ -40,7 +40,7 @@ export default async function AdminPostIDPage({params}: AdminPostIDPageProps){
         <>
           <div className="flex flex-col gap-6">
                       <h1 className="text-xl font-extrabold">Editar Post</h1>
-                      <ManagePostForm DTOPost={postDto}/>
+                      <ManagePostForm mode='update' publicPost={postDto}/>
                   </div>
 
         </>

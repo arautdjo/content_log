@@ -1,19 +1,20 @@
 import { PostModel } from "@/models/posts/posts-model";
 import { PostRepository } from "./post-repository";
-import { readFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import {
-    MILULATE_WAIT_IN_MS,
-    ROOT_DIR,
     JSON_POST_SEED_PATH
  } from "@/lib/constants";
+import { resolve } from "path";
+import { SofaIcon } from "lucide-react";
+import { makeSlugFromText } from "@/utils/make-slug-from-text";
 
-
+const simulateWaitInMs = Number(process.env.SIMULATE_WAIT_IN_MS) || 0
 export class JsonPostRepository implements PostRepository{
 
     private async simulateWait(){
-        if(MILULATE_WAIT_IN_MS<=0) return
+        if(simulateWaitInMs<=0) return
 
-        return new Promise(resolve=>setTimeout(resolve,MILULATE_WAIT_IN_MS))
+        return new Promise(resolve=>setTimeout(resolve,simulateWaitInMs))
     }
 
      private async readFromDisk(): Promise<PostModel[]>{
@@ -63,12 +64,101 @@ export class JsonPostRepository implements PostRepository{
             return allPosts
     }
 
+//     private async writeToDisk(posts: PostModel[]): Promise<void> {
+//     const jsonToString = JSON.stringify({ posts }, null, 2);
+//     await writeFile(JSON_POST_SEED_PATH, jsonToString, 'utf-8');
+//   }
+
+    private async writeOnDisk(posts: PostModel[]):Promise<void>{
+       const caminho = resolve('src','db','seeds','posts.json')
+       const readyToWrite = JSON.stringify({ posts },null,2)
+       await writeFile(caminho,readyToWrite,'utf-8')
+    }
 
 
+     async create(registro: PostModel):Promise<PostModel>{
+
+
+        let confirma = JSON.stringify({});
+
+        try{
+
+            confirma = await readFile(resolve('src','db','seeds','posts.json'),'utf-8')
+
+        }catch(error){
+            console.log('I HAVE THE FULL FILE')
+             console.log(error)
+            console.log('I HAVE THE FULL FILE')
+        }
+
+        const confirmaPrsed = JSON.parse(confirma)
+        const conformRecord = confirmaPrsed
+                              .posts
+                              .find((rec: PostModel)=>
+                                rec.id === registro?.id || rec.slug ===registro?.slug)
+        if(conformRecord?.id){
+            throw new Error("Um registro com a sluf e id foi encontrado na base de dados")
+        }
+
+        confirmaPrsed.posts.push(registro)
+
+        await this.writeOnDisk(confirmaPrsed.posts)
+        return confirmaPrsed
+     }
+
+
+     async update(
+         id: string,
+         record: Omit<PostModel, 'id' | 'slug' | 'createdAt' | 'updatedAt'>
+    ): Promise<PostModel>{
+
+        const isRecord = await readFile(resolve('src','db', 'seeds','posts.json'),'utf-8')
+        if(!isRecord){
+          throw new Error('Registro não encontrado em nossa base de dados')
+        }
+
+        const isRecordKonverted = JSON.parse(isRecord)
+
+        const recordTarget = isRecordKonverted
+                             .posts
+                             .findIndex((rec:PostModel)=>rec.id === id)
+
+
+
+        const updatedRec = {
+            ...isRecordKonverted.posts[recordTarget],
+            ...record,
+            slug:makeSlugFromText(record.title)
+        }
+
+                isRecordKonverted.posts[recordTarget] = updatedRec
+
+
+
+        await this.writeOnDisk(isRecordKonverted.posts)
+        return isRecordKonverted.posts
+     }
+
+
+     async delete(id: string):Promise<PostModel>{
+       const postExists = await readFile(resolve('src','db','seeds','posts.json'),'utf-8')
+
+       if(!postExists){
+           throw new Error('o post que esta tentando deletar, nao existe')
+       }
+
+       const postExistsKonv = JSON.parse(postExists)
+         const resultingBase = postExistsKonv
+                               .posts
+                               .filter((rec:PostModel)=>rec.id!==id)
+
+
+          await this.writeOnDisk(resultingBase)
+          return resultingBase
+      }
 
 }
 
-// bf5c7dae-06a4-4155-9c01-a56e02956496
 
 const teste = new JsonPostRepository();
 

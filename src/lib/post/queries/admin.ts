@@ -9,7 +9,11 @@ export const findAllPostAdmin =
 cache(async ()=> await  postRepository.findAll())
 
 
-export const findAllPostAdminCahed = unstable_cache(postRepository.findAll,
+// export const findAllPostAdminCahed = unstable_cache(postRepository.findAll.bind(postRepository),
+//     ['admin-cache'],{tags:['admin-cache'], revalidate:180}
+// )
+
+export const findAllPostAdminCahed = unstable_cache(postRepository.findAll.bind(postRepository),
     ['admin-cache'],{tags:['admin-cache']}
 )
 

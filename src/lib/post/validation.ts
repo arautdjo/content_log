@@ -10,7 +10,7 @@ title:z.
     string()
     .trim()
     .min(3, "Titulo deve ter no minimo 3 caracteres")
-    .max(120,"Titulo deve ter no maximo 120 caracteres"),
+    .max(3120,"Titulo deve ter no maximo 120 caracteres"),
     content:z.string()
     .trim()
     .min(3,"Conteudo é obrigatorio")

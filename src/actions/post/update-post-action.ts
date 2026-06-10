@@ -1,8 +1,8 @@
 'use server'
 
 
-import { makePublicPostFillOrEmpt, PublicPost } from "@/dto/post/dto"
-import { PostcreateSchema } from "@/lib/post/validation"
+import { makePublicPostFillOrEmpt, makePublicPostFromDB, PublicPost } from "@/dto/post/dto"
+import { PostUpdateSchema } from "@/lib/post/validation"
 import { PostModel } from "@/models/posts/posts-model"
 import { postRepository } from "@/repositories/post"
 import { assyncDelay } from "@/utils/async-delay"
@@ -13,16 +13,16 @@ import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import {v4 as uuidV4} from 'uuid'
 
-type createPostActionState = {
+type updatePostActionState = {
     formState:PublicPost,
     errors:string[],
-    sucsses?:string
+    sucsses?: string
 }
 
-export async function createPostAction(
-    prevState:createPostActionState,
+export async function updatePostAction(
+    prevState:updatePostActionState,
     formData:FormData
-): Promise<createPostActionState>{
+): Promise<updatePostActionState>{
 
     await assyncDelay(3000)
 
@@ -35,6 +35,14 @@ export async function createPostAction(
 
     const title = formData.get('title')?.toString() || ''
     const howPublished = formData.get('published')?.toString() || ''
+    const id = formData.get('id')?.toString() || ''
+
+    if(!id || typeof id!=='string'){
+        return {
+        formState:{...prevState.formState},
+        errors:['Dadods Invalidos']
+       }
+    }
 
     const published = !!howPublished
 
@@ -48,7 +56,7 @@ export async function createPostAction(
     // console.log(formDataToObjKonverted)
     // console.log('SHOW ME THE MEANING OF BEING...')
 
-    const zodAllParsed = PostcreateSchema.safeParse(formDataToObj)
+    const zodAllParsed = PostUpdateSchema.safeParse(formDataToObj)
 
     if(!zodAllParsed.success){
          const errors = getZodErrorMessages(zodAllParsed.error.format())
@@ -63,12 +71,12 @@ export async function createPostAction(
 
     const allValidPostFields = zodAllParsed.data
 
-    const obejectToDataBase: PostModel = {
+    const obejectToDataBase = {
         ...allValidPostFields,
-        createdAt:new Date().toISOString(),
-        updatedAt:new Date().toISOString(),
-        id:uuidV4(),
-        slug:makeSlugFromText(allValidPostFields.title)
+        // updatedAt:new Date().toISOString(),
+        // updatedAt:new Date().toISOString(),
+        // id:uuidV4(),
+        // slug:makeSlugFromText(allValidPostFields.title)
 
 
 
@@ -77,32 +85,36 @@ export async function createPostAction(
    console.log('__HEY JUDE WE ARE ALL HERE__')
    console.log(allValidPostFields)
    console.log('__HEY JUDE WE ARE ALL HERE__')
-
+   let postFromDb;
    try{
     // await drizzleDb.insert(postsTable).values(obejectToDataBase)
-    await postRepository.create(obejectToDataBase)
+    postFromDb = await postRepository.update(id,obejectToDataBase)
    }catch(error: unknown){
         if(error instanceof Error){
            return{
-            formState:obejectToDataBase,
+            formState: makePublicPostFillOrEmpt(obejectToDataBase),
             errors:[error.message]
            }
         }
 
         return {
-            formState:obejectToDataBase,
+            formState: makePublicPostFillOrEmpt(obejectToDataBase),
             errors:['erro desconhecido']
            }
    }
-
+    // admin-cache
 //    revalidateTag('posts','')
    revalidateTag('admin-cache','')
-   redirect(`/admin/post/${obejectToDataBase.id}?option=create`)
+//    redirect(`/admin/post/${obejectToDataBase.}`)
+   revalidateTag(`/admin/post/${id}`,'')
+
+
 
    return {
-        formState:obejectToDataBase,
+        formState: makePublicPostFromDB(postFromDb),
 
-        errors:[]
+        errors:[],
+        sucsses: new Date().toISOString()
      }
 
 }

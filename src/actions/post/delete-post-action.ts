@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm';
 import {revalidateTag} from 'next/cache'
 
 export async function deletePostAction(id: string){
-  await assyncDelay(9000)
+  await assyncDelay(1000)
 
   if(!id || typeof id !=='string'){
       return {
@@ -17,28 +17,36 @@ export async function deletePostAction(id: string){
       }
   }
 
-  const post = await  postRepository.findById(id).catch(()=>undefined)
 
-  if(!post){
-    return {
-        error: 'ID provavelmente invalido'
+
+    let post;
+
+    try{
+    post = await postRepository.delete(id)
+    }catch(error:unknown){
+    if(error instanceof Error){
+        return{
+            error:error.message
+        }
+
     }
-  }
 
-  const feedabacka = await drizzleDb.delete(postsTable).where(eq(postsTable.id,id))
-
-  logColored('+++++++++++')
-  console.log(feedabacka)
-  logColored('+++++++++++')
-
-  if(feedabacka.changes ===0 && feedabacka.lastInsertRowid ===0){
-      return {
-        error: 'Não ha post referente ao ID'
+    return{
+            error:'Erro Desconhecido'
+        }
     }
-  }
+
+
+
+//   if(feedabacka.changes ===0 && feedabacka.lastInsertRowid ===0){
+//       return {
+//         error: 'Não ha post referente ao ID'
+//     }
+//   }
 
   revalidateTag('posts','')
   revalidateTag(`post-${post.slug}`,'')
+
   revalidateTag('admin-cache','')
 
 
