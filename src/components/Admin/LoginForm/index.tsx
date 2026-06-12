@@ -44,7 +44,7 @@ export default function LoginForm(){
 
                  <InputText
                  labelText="Senha"
-                 name="senh"
+                 name="senha"
                  placeholder="Sua senha"
                  type="passwrod"
                 //  defaultValue={formState.id}

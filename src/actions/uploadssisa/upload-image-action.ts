@@ -13,7 +13,7 @@ type uploadImageActionResult = {
 
 export async function uploadImageAction(formData:FormData): Promise<uploadImageActionResult>{
     await assyncDelay(4000)
- const makeResult = ({url='',error=''})=>({url,error})
+    const makeResult = ({url='',error=''})=>({url,error})
 
     if(!(formData instanceof FormData)){
         return makeResult({error:'ESTE FORMULARIO É FALSO'})
@@ -28,6 +28,7 @@ export async function uploadImageAction(formData:FormData): Promise<uploadImageA
         return makeResult({error:'FAKE IMAGE...'})
 
     }
+
      const uploadMaxSize = Number(process.env.NEXT_UPIMAGE_MAX_SIZE) || 921600
      if(arquivo.size>uploadMaxSize){
         return makeResult({error:'too big of a file *'})
