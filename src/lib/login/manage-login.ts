@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 
 import {SignJWT,jwtVerify} from 'jose'
+// import { redirect } from "next/dist/server/api-utils";
+import { redirect } from 'next/navigation';
 
 const JWTsecretKey = process.env.JWT_SECRET_KEY;
 const jwtEncodedKey = new TextEncoder().encode(JWTsecretKey)
@@ -21,7 +23,7 @@ export async function hahsPassword(senha:string){
 
     const hash = await bcrypt.hash(senha,10)
 
-   const base64d = Buffer.from(hash).toString('base64')
+    const base64d = Buffer.from(hash).toString('base64')
 
     const base64Turned = await  generateHashedPass(hash)
 
@@ -52,6 +54,36 @@ export async function verifyPassword(senha:string,baseToHash:string){
    })
  }
 
+ export async function getLoginSession(){
+   const cookieStore = await cookies()
+
+   const jwt = cookieStore.get(loginCookieName)?.value
+
+   if(!jwt) return false
+
+   return verifyJwt(jwt)
+
+ }
+
+    export async function verifyLoginSession(){
+         const jwtPayload = await getLoginSession()
+
+        if(!jwtPayload) return false
+
+        if(jwtPayload.username !== process.env.LOGIN_USER){
+            return false
+        }
+    }
+
+
+    export async function requireLoginSessionOrRedirect(){
+         const isAuthenticated = await getLoginSession()
+
+         if(!isAuthenticated){
+            redirect('/admin/login')
+         }
+    }
+
 
  export async function deleteLoginSession(){
     const leCookie = await cookies()
@@ -68,6 +100,19 @@ export async function verifyPassword(senha:string,baseToHash:string){
      }).setIssuedAt()
        .setExpirationTime(loginExpStr)
        .sign(jwtEncodedKey)
+ }
+
+ export async function verifyJwt(jwt: string | undefined = ''){
+    try{
+      const { payload } = await jwtVerify(jwt, jwtEncodedKey,{
+        algorithms:['HS256'],
+     });
+     return payload
+    }catch{
+      console.log('jwt provavelmente invalida...')
+      return false
+    }
+
  }
 
 // (async ()=>{
