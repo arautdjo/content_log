@@ -2,6 +2,7 @@
 
 
 import { makePublicPostFillOrEmpt, PublicPost } from "@/dto/post/dto"
+import { verifyLoginSession } from "@/lib/login/manage-login"
 import { PostcreateSchema } from "@/lib/post/validation"
 import { PostModel } from "@/models/posts/posts-model"
 import { postRepository } from "@/repositories/post"
@@ -48,6 +49,15 @@ export async function createPostAction(
     // console.log(formDataToObjKonverted)
     // console.log('SHOW ME THE MEANING OF BEING...')
 
+    const isAuthenticated = await verifyLoginSession()
+
+    if(!isAuthenticated ){
+        return {
+            formState:makePublicPostFillOrEmpt(formDataToObj),
+            errors:['faça login em outra aba antes de salvar']
+        }
+    }
+
     const zodAllParsed = PostcreateSchema.safeParse(formDataToObj)
 
     if(!zodAllParsed.success){
@@ -73,6 +83,7 @@ export async function createPostAction(
 
 
     }
+
 
    console.log('__HEY JUDE WE ARE ALL HERE__')
    console.log(allValidPostFields)

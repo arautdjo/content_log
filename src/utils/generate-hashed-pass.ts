@@ -13,7 +13,7 @@ export async function decriptHased64(hasehd64: string){
 
 
 (async function GenerateSenha(){
-    const senhaAGerar = 'vitoriaa'
+    const senhaAGerar = 'copa2026'
     const generated = await hahsPassword(senhaAGerar)
 
     console.log('** PASS GENERATED **')

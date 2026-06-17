@@ -2,16 +2,13 @@
 
 
 import { makePublicPostFillOrEmpt, makePublicPostFromDB, PublicPost } from "@/dto/post/dto"
+import { verifyLoginSession } from "@/lib/login/manage-login"
 import { PostUpdateSchema } from "@/lib/post/validation"
-import { PostModel } from "@/models/posts/posts-model"
 import { postRepository } from "@/repositories/post"
 import { assyncDelay } from "@/utils/async-delay"
 import { getZodErrorMessages } from "@/utils/get-zod-error-messages"
-import { logColored } from "@/utils/log-color"
-import { makeSlugFromText } from "@/utils/make-slug-from-text"
+// import { logColored } from "@/utils/log-color"
 import { revalidateTag } from "next/cache"
-import { redirect } from "next/navigation"
-import {v4 as uuidV4} from 'uuid'
 
 type updatePostActionState = {
     formState:PublicPost,
@@ -36,6 +33,7 @@ export async function updatePostAction(
     const title = formData.get('title')?.toString() || ''
     const howPublished = formData.get('published')?.toString() || ''
     const id = formData.get('id')?.toString() || ''
+    const isAuthenticated = await verifyLoginSession()
 
     if(!id || typeof id!=='string'){
         return {
@@ -48,6 +46,16 @@ export async function updatePostAction(
 
 
     const formDataToObj = Object.fromEntries(formData.entries())
+    console.log(' TONHA &&& KATIA')
+    console.log(isAuthenticated)
+    console.log(' TONHA &&& KATIA')
+
+    if(!isAuthenticated){
+        return {
+            formState:makePublicPostFillOrEmpt(formDataToObj),
+            errors:['faça login em outra aba antes de salvar']
+        }
+    }
 
     // const formDataToObjKonverted = makePublicPostFillOrEmpt(formDataToObj)
 

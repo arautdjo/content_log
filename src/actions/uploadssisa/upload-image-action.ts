@@ -1,5 +1,6 @@
 'use server'
 
+import { verifyLoginSession } from "@/lib/login/manage-login"
 // import { IMAGE_SERVER_URL, IMAGE_UPLOAD_DIRECTORY, UPIMAGE_MAX_SIZE } from "@/lib/constants"
 import { assyncDelay } from "@/utils/async-delay"
 import { logColored } from "@/utils/log-color"
@@ -18,6 +19,12 @@ export async function uploadImageAction(formData:FormData): Promise<uploadImageA
     if(!(formData instanceof FormData)){
         return makeResult({error:'ESTE FORMULARIO É FALSO'})
 
+    }
+
+    const isAuthenticated = await verifyLoginSession()
+
+    if(!isAuthenticated ){
+        return makeResult({error:'faça login novamente'})
     }
 
     const arquivo = formData.get('arquivo')

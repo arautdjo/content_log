@@ -1,5 +1,5 @@
 
-import { decriptHased64, generateHashedPass } from "@/utils/generate-hashed-pass";
+// import { decriptHased64, generateHashedPass } from "@/utils/generate-hashed-pass";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 
@@ -19,23 +19,28 @@ type JWTPayload  = {
 }
 
 
-export async function hahsPassword(senha:string){
+ export async function hahsPassword(senha:string){
 
     const hash = await bcrypt.hash(senha,10)
 
     const base64d = Buffer.from(hash).toString('base64')
 
-    const base64Turned = await  generateHashedPass(hash)
+    // const base64Turned = await  generateHashedPass(hash)
+    // const base64Turned = Buffer.from(pass).toString('base64')
 
-    return base64Turned
+    return base64d
  }
 
 
 
 export async function verifyPassword(senha:string,baseToHash:string){
-    const hashBack = await decriptHased64(baseToHash)
+    // const hashBack = await decriptHased64(baseToHash)
+    const hashBack = Buffer.from(baseToHash,'base64').toString('utf-8')
 
     const isValid = await bcrypt.compare(senha,hashBack)
+    console.log('ME FALA O QUE MUDOU VEI')
+    console.log(isValid)
+    console.log('ME FALA O QUE MUDOU VEI')
     return isValid
 
  }
@@ -61,6 +66,10 @@ export async function verifyPassword(senha:string,baseToHash:string){
 
    if(!jwt) return false
 
+    console.log('[que xule ]OOOOOOOOOOOOOOPAAA')
+    console.log(jwt)
+    console.log('[que xule ]OOOOOOOOOOOOOOPAAA')
+
    return verifyJwt(jwt)
 
  }
@@ -73,6 +82,8 @@ export async function verifyPassword(senha:string,baseToHash:string){
         if(jwtPayload.username !== process.env.LOGIN_USER){
             return false
         }
+
+        return jwtPayload
     }
 
 

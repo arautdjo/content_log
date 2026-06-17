@@ -1,15 +1,25 @@
 'use server'
 
-import { drizzleDb } from "@/db/drizzle"
-import { postsTable } from "@/db/drizzle/schemas"
+import { verifyLoginSession } from "@/lib/login/manage-login"
 import { postRepository } from "@/repositories/post"
 import { assyncDelay } from "@/utils/async-delay"
-import { logColored } from "@/utils/log-color"
-import { eq } from 'drizzle-orm';
+// import { logColored } from "@/utils/log-color"
 import {revalidateTag} from 'next/cache'
 
 export async function deletePostAction(id: string){
+
+    const isAuthenticated = await verifyLoginSession()
+
+    if(!isAuthenticated ){
+            return {
+                formState:undefined,
+                errors:'faça login novamente!'
+            }
+        }
+
   await assyncDelay(1000)
+
+
 
   if(!id || typeof id !=='string'){
       return {
