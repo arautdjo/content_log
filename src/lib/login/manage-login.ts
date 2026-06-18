@@ -1,3 +1,4 @@
+'use server'
 
 // import { decriptHased64, generateHashedPass } from "@/utils/generate-hashed-pass";
 import bcrypt from "bcryptjs";

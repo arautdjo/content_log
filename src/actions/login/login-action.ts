@@ -12,7 +12,14 @@ type loginActionState = {
 export async function loginAction(state:loginActionState, formdate:FormData){
   await assyncDelay(4000)
 
+  const permiteLogin = !!Number(process.env.ALLOW_LOGIN)
 
+  if(!permiteLogin){
+         return {
+            username:'',
+            error:'Login Desabilitado'
+        }
+  }
 
   if(!(formdate instanceof FormData)){
       return{

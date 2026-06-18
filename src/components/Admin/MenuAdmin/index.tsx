@@ -1,11 +1,12 @@
 'use client'
 
 // import {useState,useContext} from 'react'
-import {useState,useEffect} from 'react'
+import {useState,useEffect, useTransition} from 'react'
 
-import { CircleXIcon, FileTextIcon, HouseIcon, MenuIcon, PlusIcon } from "lucide-react";
+import { CircleXIcon, FileTextIcon, HourglassIcon, HouseIcon, LogOutIcon, MenuIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import {usePathname} from 'next/navigation'
+import { logOutAction } from '@/actions/login/logout-action';
 // import { ModalContext } from '@/components/BlockingModal';
 
 
@@ -15,6 +16,8 @@ export function MenuAdmin(){
     // const {isOpen,toggleSeting } = useContext(ModalContext)!
     const [isOpen,setIsOpen] =useState(false)
     const pathName = usePathname()
+    const [isPending,stratTransit] = useTransition()
+
     const navClass = `
       bg-blue-900 text-slate-300 rounded-lg flex flex-col
        mb-8 sm:flex-row sm:flex-wrap ${!isOpen && 'overflow-hidden'} ${!isOpen && 'h-10'}
@@ -28,6 +31,15 @@ export function MenuAdmin(){
         // toggleSeting(old=>!old)
 
      }
+
+     async function handleLogout(event:React.MouseEvent<HTMLAnchorElement, MouseEvent>){
+       event.preventDefault()
+
+       stratTransit(async()=>{
+         await logOutAction()
+       })
+     }
+
 
      const openCLiseBtnClass = `
         text-red-200 italic px-2 mt-1 text-sm
@@ -144,6 +156,24 @@ export function MenuAdmin(){
                   <FileTextIcon />
                   show
                 </Link>
+
+                <a href="#" onClick={handleLogout} className={linkClass}>
+
+                    {isPending && (
+                       <>
+                         <HourglassIcon/>
+                        <p>Saindo...</p>
+                       </>
+                    )}
+
+                    {!isPending && (
+                        <>
+                          <LogOutIcon/>
+
+                          Sair
+                        </>
+                    )}
+                </a>
 
         </nav>
      )
